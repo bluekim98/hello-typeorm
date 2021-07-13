@@ -5,17 +5,12 @@ import { User } from './user.entity';
 import { usersProviders } from './users.providers';
 import { UsersService } from './users.service';
 import { TeamModule } from '../team/team.module';
-import { TeamService } from '../team/team.service';
 import { CreateUserDto } from './dto/createUser.dto';
-import { AppModule } from '../app.module';
 
 describe('UsersService', () => {
-  jest.setTimeout(10000000);
-  
   let service: UsersService;
   let createUserDto: CreateUserDto;
-  let user: User;
-  let team: Team;
+
 
   beforeEach(async () => {
     try {
@@ -34,7 +29,7 @@ describe('UsersService', () => {
   
 
   beforeEach(async() => {
-    // await service.clear();
+    await service.clear();
     
     createUserDto = new CreateUserDto();
     createUserDto.email = 'dlwlrma@email.com';
@@ -42,22 +37,8 @@ describe('UsersService', () => {
     createUserDto.nickname = 'dlwlrma';
     createUserDto.teamId = 1;
 
-    // await service.save(createUserDto);
+    await service.save(createUserDto);
   });
-  
-
-  /*
-  afterAll(async() => {
-    for(let i = 0; i < 30000; i++) {
-      let userDto: CreateUserDto = new CreateUserDto();
-      userDto.email = `test${i}@email.com`;
-      userDto.name = `test${i}`
-      userDto.nickname = `nickname${i}`;
-      userDto.teamId = 1
-      await service.save(userDto);
-    }
-  });
-  */
 
   it('should be defined', () => {
     expect(service).toBeDefined();
@@ -75,11 +56,23 @@ describe('UsersService', () => {
     expect(findedUser.team.id).toBe(createUserDto.teamId);
   });
 
+  /*
   it('just time test', async () => {
+    jest.setTimeout(10000000);
+
+    for(let i = 0; i < 30000; i++) {
+      let userDto: CreateUserDto = new CreateUserDto();
+      userDto.email = `test${i}@email.com`;
+      userDto.name = `test${i}`
+      userDto.nickname = `nickname${i}`;
+      userDto.teamId = 1
+      await service.save(userDto);
+    }
+
     const title = '30,000 performance tests';
     console.time(title);
     const users: User[] = await service.findAll();
     console.timeEnd(title);
   })
-
+  */
 });

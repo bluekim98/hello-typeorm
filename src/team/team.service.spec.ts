@@ -10,7 +10,7 @@ describe('TeamService', () => {
   beforeEach(async () => {
     try {
       const module: TestingModule = await Test.createTestingModule({
-        imports: [DatabaseModule],
+        imports:[DatabaseModule],
         providers: [
           ...teamProviders,
           TeamService
