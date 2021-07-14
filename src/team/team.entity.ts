@@ -1,5 +1,6 @@
 import { User } from "../users/user.entity";
 import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { JoinTeamDto } from "./dto/joinTeam.dto";
 
 @Entity()
 export class Team {
@@ -12,21 +13,20 @@ export class Team {
     @OneToMany(() => User, user => user.team)
     users: User[];
 
-    static getTeamById(id: number): Team {
-        const _mapper = {
-            1: 'Business',
-            2: 'Developer',
-        }
+    
+    private readonly _mapper = {
+        1: 'Business',
+        2: 'Developer',
+    }
+    
+    async joinTeam(joinTeamDto: JoinTeamDto): Promise<void> {
+        const title = this._mapper[joinTeamDto.teamId];
+        if(!title) return
 
-        const title = _mapper[id];
-        if(!title) {
-            return null;
-        }
+        this.id = joinTeamDto.teamId;
+        this.title = title;
+        joinTeamDto.user.team = this
 
-        const team: Team = new Team();
-        team.id = id;
-        team.title = title;
-        return team;
     }
 
 }

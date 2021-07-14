@@ -1,11 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Team } from '../team/team.entity';
 import { DatabaseModule } from '../database/database.module';
 import { User } from './user.entity';
 import { usersProviders } from './users.providers';
 import { UsersService } from './users.service';
 import { TeamModule } from '../team/team.module';
 import { CreateUserDto } from './dto/createUser.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
+import user from "../../fixture/user";
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -32,10 +33,10 @@ describe('UsersService', () => {
     await service.clear();
     
     createUserDto = new CreateUserDto();
-    createUserDto.email = 'dlwlrma@email.com';
-    createUserDto.name = '아이유';
-    createUserDto.nickname = 'dlwlrma';
-    createUserDto.teamId = 1;
+    createUserDto.email = user.email;
+    createUserDto.name = user.name;
+    createUserDto.nickname = user.nickname;
+    createUserDto.teamId = user.teamId;
 
     await service.save(createUserDto);
   });
@@ -54,6 +55,17 @@ describe('UsersService', () => {
     const findedUser: User = await service.findByEmail(createUserDto.email);
     expect(findedUser.email).toBe(createUserDto.email);
     expect(findedUser.team.id).toBe(createUserDto.teamId);
+  });
+
+  it('should be updated nickname', async () => {
+    const updateUserDto: UpdateUserDto = new UpdateUserDto();
+    updateUserDto.email = createUserDto.email;
+    updateUserDto.nickname = 'dlwlrma';
+    
+    await service.update(updateUserDto);
+
+    const updatedUser: User = await service.findByEmail(createUserDto.email);
+    expect(updatedUser.nickname).toBe(updateUserDto.nickname);
   });
 
   /*
