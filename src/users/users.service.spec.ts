@@ -8,18 +8,17 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 import user from "../../fixture/user";
 
 describe('UsersService', () => {
+  let module: TestingModule 
   let service: UsersService;
   let createUserDto: CreateUserDto;
 
 
-  beforeEach(async () => {
-    try {
-      const module: TestingModule = await Test.createTestingModule({
-        imports: [DatabaseModule, UsersModule],
-        providers: [UsersService],
-      }).compile();
-      service = module.get<UsersService>(UsersService);
-    } catch (error) {}
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
+      imports: [DatabaseModule, UsersModule],
+      providers: [UsersService],
+    }).compile();
+    service = module.get<UsersService>(UsersService);
   });
   
 
@@ -81,4 +80,8 @@ describe('UsersService', () => {
     console.timeEnd(title);
   })
   */
+
+  afterAll(async () => {
+    await module.close();
+  })
 });
