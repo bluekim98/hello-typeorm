@@ -14,13 +14,13 @@ export class Team {
     users: User[];
 
     
-    private readonly _mapper = {
-        1: 'Business',
-        2: 'Developer',
-    }
-    
     async joinTeam(joinTeamDto: JoinTeamDto): Promise<void> {
-        const title = this._mapper[joinTeamDto.teamId];
+        const _mapper = {
+            1: 'Business',
+            2: 'Developer',
+        }
+
+        const title = _mapper[joinTeamDto.teamId];
         if(!title) return
 
         this.id = joinTeamDto.teamId;

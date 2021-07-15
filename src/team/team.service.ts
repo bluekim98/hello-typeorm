@@ -27,6 +27,9 @@ export class TeamService {
             where: {id},
             relations: ["users"]
         });
+
+        if(!findedTeam) return;
+        
         return findedTeam.users;
     }
 }

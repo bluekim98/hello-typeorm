@@ -15,14 +15,12 @@ describe('UsersController', () => {
   beforeEach(async () => {
     try {
       const module: TestingModule = await Test.createTestingModule({
-        imports: [DatabaseModule, TeamModule, UsersModule],
-        controllers: [UsersController, UsersService],
+        imports: [DatabaseModule, UsersModule],
+        controllers: [UsersController],
       }).compile();
   
       controller = module.get<UsersController>(UsersController);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   });
 
 

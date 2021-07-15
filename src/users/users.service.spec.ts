@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { UsersModule } from './users.module';
 import { DatabaseModule } from '../database/database.module';
 import { User } from './user.entity';
-import { usersProviders } from './users.providers';
 import { UsersService } from './users.service';
-import { TeamModule } from '../team/team.module';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import user from "../../fixture/user";
@@ -16,16 +15,11 @@ describe('UsersService', () => {
   beforeEach(async () => {
     try {
       const module: TestingModule = await Test.createTestingModule({
-        imports: [DatabaseModule, TeamModule],
-        providers: [
-          ...usersProviders,
-          UsersService
-        ],
+        imports: [DatabaseModule, UsersModule],
+        providers: [UsersService],
       }).compile();
       service = module.get<UsersService>(UsersService);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   });
   
 

@@ -16,4 +16,4 @@ const node_env = process.env.NODE_ENV === 'production' ? 'app' : 'dev';
     ],
     exports: ['DATABASE_CONNECTION']
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpCode, HttpStatus, INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import user from "../fixture/user";
 import { CreateUserDto } from '../src/users/dto/createUser.dto';
 import { UsersService } from '../src/users/users.service';
+
+import user from "../fixture/user";
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
@@ -16,6 +17,7 @@ describe('UsersController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
 
     usersService = moduleFixture.get(UsersService);
@@ -23,7 +25,7 @@ describe('UsersController (e2e)', () => {
   });
 
 
-  it('/users (POST)',(done) => {
+  it('/users (POST)', (done) => {
     const createUserDto: CreateUserDto = new CreateUserDto();
     createUserDto.email = user.email,
     createUserDto.name = user.name,
@@ -37,14 +39,24 @@ describe('UsersController (e2e)', () => {
       .end(done)
   });
 
-  it('/users (GET)',(done) => {
+  it('/users (GET)', (done) => {
     return request(app.getHttpServer())
       .get(`/users/${user.email}`)
       .expect(HttpStatus.OK)
       .end(done);
   });
 
-
+  it('/users (PUT)', (done) => {
+    return request(app.getHttpServer())
+      .put(`/users/`)
+      .query({
+        email: user.email,
+        name: '이지은',
+        nickname: '아이유'
+      })
+      .expect(HttpStatus.OK)
+      .end(done);
+  })
 
   afterAll(async () => {
     await app.close();

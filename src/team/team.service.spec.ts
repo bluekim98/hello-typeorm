@@ -8,18 +8,14 @@ describe('TeamService', () => {
 
 
   beforeEach(async () => {
-    try {
-      const module: TestingModule = await Test.createTestingModule({
-        imports:[DatabaseModule],
-        providers: [
-          ...teamProviders,
-          TeamService
-        ],
-      }).compile();
-      service = module.get<TeamService>(TeamService);
-    } catch (error) {
-      
-    }
+    const module: TestingModule = await Test.createTestingModule({
+      imports:[DatabaseModule],
+      providers: [
+        ...teamProviders,
+        TeamService
+      ],
+    }).compile();
+    service = module.get<TeamService>(TeamService);
 
   });
 
